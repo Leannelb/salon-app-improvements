@@ -1,0 +1,6 @@
+cat > .eslintignore << 'EOF'
+node_modules/
+.expo/
+dist/
+web-build/
+EOF
