@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { Text, Card, Button, TextInput, Title, Divider, HelperText } from 'react-native-paper';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { CommandResult } from '../utils/voice-command-parser';
+import { bookingScreenStyles as styles } from '../styles/bookingStyles';
 
 // Mock data for services and stylists
 const services = [
@@ -352,45 +353,3 @@ export default function BookingConfirmation() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  heading: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  summaryCard: {
-    marginBottom: 16,
-  },
-  detailText: {
-    fontSize: 16,
-    marginVertical: 4,
-  },
-  divider: {
-    marginVertical: 12,
-  },
-  priceText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 8,
-  },
-  formCard: {
-    marginBottom: 16,
-  },
-  input: {
-    marginVertical: 4,
-  },
-  cardRowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cardRowInput: {
-    flex: 1,
-  },
-  confirmButton: {
-    marginVertical: 24,
-    paddingVertical: 8,
-  },
-});

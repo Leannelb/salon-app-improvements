@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Image } from 'react-native'; // ui elements
+import { View, FlatList, Image } from 'react-native'; // ui elements
 import { Text, Card, Button, Title, Chip } from 'react-native-paper'; //ui elements
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { CommandResult } from '../utils/voice-command-parser';
-
-// Type definitions
+import { stylistStyles } from '../styles/stylistStyles';
 type Stylist = {
   id: string;
   name: string;
@@ -105,17 +104,24 @@ export default function StylistSelection() {
 
   const renderStylistItem = ({ item }: { item: Stylist }) => (
     <Card
-      style={[styles.stylistCard, selectedStylist === item.id ? styles.selectedCard : null]}
+      style={[
+        stylistStyles.stylistCard,
+        selectedStylist === item.id ? stylistStyles.selectedCard : null,
+      ]}
       onPress={() => setSelectedStylist(item.id)}
     >
-      <Card.Content style={styles.stylistContent}>
-        {item.imageUrl && <Image source={{ uri: item.imageUrl }} style={styles.stylistImage} />}
-        <View style={styles.stylistInfo}>
+      <Card.Content style={stylistStyles.stylistContent}>
+        {item.imageUrl && (
+          <Image source={{ uri: item.imageUrl }} style={stylistStyles.stylistImage} />
+        )}
+        <View style={stylistStyles.stylistInfo}>
           <Title>{item.name}</Title>
-          {item.experience && <Text style={styles.experience}>{item.experience} experience</Text>}
-          <View style={styles.specialtiesContainer}>
+          {item.experience && (
+            <Text style={stylistStyles.experience}>{item.experience} experience</Text>
+          )}
+          <View style={stylistStyles.specialtiesContainer}>
             {item.specialties.map((specialty) => (
-              <Chip key={specialty} style={styles.specialtyChip}>
+              <Chip key={specialty} style={stylistStyles.specialtyChip}>
                 {getServiceNameById(specialty)}
               </Chip>
             ))}
@@ -128,17 +134,17 @@ export default function StylistSelection() {
   const selectedService = services.find((s) => s.id === serviceId);
 
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.heading}>
+    <View style={stylistStyles.container}>
+      <Text variant="headlineMedium" style={stylistStyles.heading}>
         Choose Your Stylist
       </Text>
 
-      <Text variant="bodyMedium" style={styles.subheading}>
+      <Text variant="bodyMedium" style={stylistStyles.subheading}>
         For: {selectedService?.name || 'Selected service'}
       </Text>
 
       {command?.stylist && (
-        <Text style={styles.voiceDetected}>
+        <Text style={stylistStyles.voiceDetected}>
           Voice command detected: {stylists.find((s) => s.id === command.stylist)?.name}
         </Text>
       )}
@@ -147,88 +153,22 @@ export default function StylistSelection() {
         data={availableStylists}
         renderItem={renderStylistItem}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.stylistsList}
+        contentContainerStyle={stylistStyles.stylistsList}
       />
 
-      <View style={styles.buttonsContainer}>
-        <Button mode="outlined" onPress={() => setSelectedStylist(null)} style={styles.anyButton}>
+      <View style={stylistStyles.buttonsContainer}>
+        <Button
+          mode="outlined"
+          onPress={() => setSelectedStylist(null)}
+          style={stylistStyles.anyButton}
+        >
           Any Available Stylist
         </Button>
 
-        <Button mode="contained" onPress={handleContinue} style={styles.continueButton}>
+        <Button mode="contained" onPress={handleContinue} style={stylistStyles.continueButton}>
           Continue
         </Button>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  heading: {
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  subheading: {
-    marginBottom: 16,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  voiceDetected: {
-    padding: 8,
-    backgroundColor: '#e3f2fd',
-    borderRadius: 4,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  stylistsList: {
-    paddingBottom: 16,
-  },
-  stylistCard: {
-    marginBottom: 12,
-  },
-  selectedCard: {
-    borderWidth: 2,
-    borderColor: '#2196F3',
-    backgroundColor: '#e3f2fd',
-  },
-  stylistContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  stylistImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    marginRight: 16,
-  },
-  stylistInfo: {
-    flex: 1,
-  },
-  experience: {
-    color: '#666',
-    marginBottom: 8,
-  },
-  specialtiesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 8,
-  },
-  specialtyChip: {
-    marginRight: 8,
-    marginBottom: 8,
-    backgroundColor: '#e0e0e0',
-  },
-  buttonsContainer: {
-    marginTop: 16,
-  },
-  anyButton: {
-    marginBottom: 12,
-  },
-  continueButton: {
-    paddingVertical: 8,
-  },
-});

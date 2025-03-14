@@ -1,9 +1,10 @@
 // screens/booking-management.tsx
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, Alert, ScrollView } from 'react-native';
+import { View, FlatList, Alert, ScrollView } from 'react-native';
 import { Text, Card, Button, Divider, Dialog, Portal } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import * as Speech from 'expo-speech';
+import { bookingManagementStyles } from '../styles/bookingStyles';
 
 // Types for bookings
 type BookingStatus = 'confirmed' | 'completed' | 'cancelled';
@@ -155,37 +156,37 @@ export default function BookingManagement() {
     const canReschedule = item.status === 'confirmed' && !isPast;
 
     return (
-      <Card style={styles.bookingCard}>
+      <Card style={bookingManagementStyles.bookingCard}>
         <Card.Content>
-          <View style={styles.bookingHeader}>
+          <View style={bookingManagementStyles.bookingHeader}>
             <Text variant="titleLarge">{item.serviceName}</Text>
-            <Text style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) }]}>
+            <Text style={[bookingManagementStyles.statusBadge, { backgroundColor: getStatusColor(item.status) }]}>
               {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
             </Text>
           </View>
 
-          <Text variant="bodyMedium" style={styles.bookingDetails}>
+          <Text variant="bodyMedium" style={bookingManagementStyles.bookingDetails}>
             {formatDate(item.date)} at {item.time}
           </Text>
 
-          <Text variant="bodyMedium" style={styles.bookingDetails}>
+          <Text variant="bodyMedium" style={bookingManagementStyles.bookingDetails}>
             with {item.stylistName} at {item.branchName}
           </Text>
 
-          <Divider style={styles.divider} />
+          <Divider style={bookingManagementStyles.divider} />
 
-          <View style={styles.bookingActions}>
-            <Text variant="titleMedium" style={styles.price}>
+          <View style={bookingManagementStyles.bookingActions}>
+            <Text variant="titleMedium" style={bookingManagementStyles.price}>
               ${item.price}
             </Text>
 
-            <View style={styles.actionButtons}>
+            <View style={bookingManagementStyles.actionButtons}>
               {canReschedule && (
                 <Button
                   mode="text"
                   onPress={() => handleReschedule(item)}
                   icon="calendar-clock"
-                  style={styles.actionButton}
+                  style={bookingManagementStyles.actionButton}
                 >
                   Reschedule
                 </Button>
@@ -197,7 +198,7 @@ export default function BookingManagement() {
                   onPress={() => handleCancelRequest(item)}
                   icon="calendar-remove"
                   textColor="#F44336"
-                  style={styles.actionButton}
+                  style={bookingManagementStyles.actionButton}
                 >
                   Cancel
                 </Button>
@@ -222,7 +223,7 @@ export default function BookingManagement() {
     <Button
       mode={isActive ? 'contained' : 'outlined'}
       onPress={onPress}
-      style={styles.filterButton}
+      style={bookingManagementStyles.filterButton}
     >
       {label}
     </Button>
@@ -235,19 +236,19 @@ export default function BookingManagement() {
       : bookings.filter((booking) => booking.status === activeFilter);
 
   return (
-    <ScrollView style={styles.container}>
-      <Text variant="headlineMedium" style={styles.heading}>
+    <ScrollView style={bookingManagementStyles.container}>
+      <Text variant="headlineMedium" style={bookingManagementStyles.heading}>
         My Appointments
       </Text>
 
-      <Card style={styles.card}>
+      <Card style={bookingManagementStyles.card}>
         <Card.Content>
           <Text variant="titleMedium">No appointments scheduled</Text>
           <Text variant="bodyMedium">Book your first appointment today!</Text>
         </Card.Content>
       </Card>
 
-      <View style={styles.filtersContainer}>
+      <View style={bookingManagementStyles.filtersContainer}>
         <FilterButton
           label="Confirmed"
           isActive={activeFilter === 'confirmed'}
@@ -271,13 +272,13 @@ export default function BookingManagement() {
       </View>
 
       {filteredBookings.length === 0 ? (
-        <Card style={styles.emptyCard}>
+        <Card style={bookingManagementStyles.emptyCard}>
           <Card.Content>
-            <Text style={styles.emptyText}>No appointments found</Text>
+            <Text style={bookingManagementStyles.emptyText}>No appointments found</Text>
             <Button
               mode="contained"
               onPress={() => router.push('/booking')}
-              style={styles.newBookingButton}
+              style={bookingManagementStyles.newBookingButton}
             >
               Book New Appointment
             </Button>
@@ -288,7 +289,7 @@ export default function BookingManagement() {
           data={filteredBookings}
           renderItem={renderBookingItem}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.bookingsList}
+          contentContainerStyle={bookingManagementStyles.bookingsList}
         />
       )}
 
@@ -314,7 +315,7 @@ export default function BookingManagement() {
         mode="contained"
         icon="plus"
         onPress={() => router.push('/booking')}
-        style={styles.floatingButton}
+        style={bookingManagementStyles.floatingButton}
       >
         Book New Appointment
       </Button>
@@ -322,86 +323,3 @@ export default function BookingManagement() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  heading: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  card: {
-    marginBottom: 16,
-  },
-  filtersContainer: {
-    flexDirection: 'row',
-    marginBottom: 16,
-  },
-  filterButton: {
-    marginHorizontal: 4,
-    flex: 1,
-  },
-  bookingsList: {
-    paddingBottom: 80, // Space for the floating button
-  },
-  bookingCard: {
-    marginBottom: 12,
-    elevation: 2,
-  },
-  bookingHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 12,
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  bookingDetails: {
-    marginVertical: 2,
-    color: '#555',
-  },
-  divider: {
-    marginVertical: 8,
-  },
-  bookingActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-  },
-  actionButton: {
-    marginLeft: 8,
-  },
-  price: {
-    fontWeight: 'bold',
-  },
-  emptyCard: {
-    marginTop: 24,
-    padding: 16,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    marginBottom: 16,
-    fontStyle: 'italic',
-    textAlign: 'center',
-  },
-  newBookingButton: {
-    marginTop: 16,
-  },
-  floatingButton: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-    left: 16,
-  },
-});
