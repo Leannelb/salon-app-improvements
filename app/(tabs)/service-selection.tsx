@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { Text, Card, Button, Title, Paragraph } from 'react-native-paper';
 import { CommandResult } from '../utils/voice-command-parser';
 import { router, useLocalSearchParams } from 'expo-router';
-
+import { serviceSelectionStyles as styles } from '../styles/stylistStyles';
 // Service type definition
 type Service = {
   id: string;
@@ -102,46 +102,3 @@ export default function ServiceSelection() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  heading: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  voiceDetected: {
-    padding: 8,
-    backgroundColor: '#e3f2fd',
-    borderRadius: 4,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  servicesList: {
-    paddingBottom: 16,
-  },
-  serviceCard: {
-    marginBottom: 12,
-  },
-  selectedCard: {
-    borderWidth: 2,
-    borderColor: '#2196F3',
-    backgroundColor: '#e3f2fd',
-  },
-  serviceDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 8,
-  },
-  duration: {
-    color: '#666',
-  },
-  price: {
-    fontWeight: 'bold',
-  },
-  continueButton: {
-    marginTop: 16,
-    paddingVertical: 8,
-  },
-});
