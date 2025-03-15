@@ -1,22 +1,6 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-/**
- * TabLayout is the main navigation component that sets up the bottom tab navigation
- * for the application using Expo Router's Tabs component.
- *
- * @returns {JSX.Element} A Tabs navigator component with configured screens for:
- *   - Home (index)
- *   - Booking
- *   - Services (service-selection)
- *   - About
- *
- * Each tab is configured with:
- *   - Custom icons using Ionicons
- *   - Active/inactive states
- *   - Custom color scheme (purple: #6A1B9A)
- *   - Hidden header
- */
 export default function TabLayout() {
   return (
     <Tabs

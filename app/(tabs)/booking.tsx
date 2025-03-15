@@ -49,22 +49,6 @@ export default function Booking() {
         style={bookingStyles.button}
         buttonText="Start Booking"
       />
-      {/* <Button
-        mode="contained"
-        onPress={() =>
-          router.push({
-            pathname: '/service-selection',
-            params: {
-              command: lastCommand
-                ? JSON.stringify(lastCommand)
-                : JSON.stringify({} as CommandResult),
-            },
-          })
-        }
-        
-      >
-        Start Booking
-      </Button> */}
     </View>
   );
 }

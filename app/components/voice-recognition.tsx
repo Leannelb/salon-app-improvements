@@ -1,4 +1,3 @@
-// components/voice-recognition.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Platform, TouchableOpacity, Animated } from 'react-native';
 import { Text, IconButton, Portal, Modal, Button } from 'react-native-paper';

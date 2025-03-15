@@ -7,6 +7,12 @@ import CustomButton from '../components/customButton';
 import { buttonStyles } from '../styles/buttonStyles';
 import { homepageStyles } from '../styles/bookingStyles';
 import { useIndexHook } from '../hooks/useBooking';
+/*
+import {model }from '../components/modal/model.tsx' 
+// if you don't name it index
+import {model} from '../components/modal'
+// if we have index.
+*/
 
 export default function Index() {
   const {
