@@ -13,7 +13,7 @@ const globalStyles = StyleSheet.create({
     fontWeight: 'normal',
   },
   dialogTitle: {
-    fontWeight: '400',  // slightly less bold than default
+    fontWeight: '400', // slightly less bold than default
   },
   dialogContent: {
     fontWeight: 'normal',
