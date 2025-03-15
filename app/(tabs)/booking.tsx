@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
-import VoiceRecognition from '../components/voice-recognition';
+import VoiceRecognition from '../components/voiceRecognition';
 import { CommandResult } from '../utils/voice-command-parser';
 import { useBooking } from '../hooks/useBooking';
 import { bookingStyles } from '../styles/bookingStyles';

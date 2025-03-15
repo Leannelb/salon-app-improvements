@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ImageBackground, ScrollView } from 'react-native';
 import { Button, Card, IconButton, Modal, Portal } from 'react-native-paper';
-import VoiceRecognition from '../components/voice-recognition';
+import VoiceRecognition from '../components/voiceRecognition';
 import { CommandResult } from '../utils/voice-command-parser';
 import CustomButton from '../components/customButton';
 import { buttonStyles } from '../styles/buttonStyles';
