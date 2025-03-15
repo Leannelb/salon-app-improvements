@@ -82,6 +82,7 @@ export function useIndexHook() {
 }
 
 /******* BOOKING MANAGEMENT - BOOKING LOGIC********/
+// Will I continue to add the booking logic here or move it to a new hook useBookingManagement
 export function useBookingManagement() {
   const [bookings, setBookings] = useState<Booking[]>(mockBookings);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
