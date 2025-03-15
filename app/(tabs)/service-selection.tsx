@@ -5,6 +5,7 @@ import { serviceSelectionStyles as styles } from '../styles/stylistStyles';
 import { Service } from '../types/serviceTypes';
 import { serviceMockData } from '../mock-data/servicesData';
 import useServices from '../hooks/useServices';
+import CustomButton from '../components/customButton';
 
 export default function ServiceSelection() {
   const { selectedService, setSelectedService, command, handleContinue } = useServices();
@@ -44,15 +45,13 @@ export default function ServiceSelection() {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.servicesList}
       />
-
-      <Button
+      <CustomButton
         mode="contained"
         onPress={handleContinue}
         disabled={!selectedService}
         style={styles.continueButton}
-      >
-        Continue
-      </Button>
+        buttonText="Continue"
+      />
     </View>
   );
 }

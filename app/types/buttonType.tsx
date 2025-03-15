@@ -9,4 +9,5 @@ export interface CustomButtonProps {
   contentStyle?: object;
   link?: string;
   icon?: string;
+  disabled?: boolean;
 }
