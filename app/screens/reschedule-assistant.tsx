@@ -13,7 +13,7 @@ import {
 } from 'react-native-paper';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as Speech from 'expo-speech';
-import { rescheduleBookingStyles } from '../styles/bookingStyles';
+import { rescheduleBookingStyles as styles } from '../styles/bookingStyles';
 
 // Types
 type Booking = {
@@ -216,9 +216,9 @@ export default function RescheduleAssistant() {
   // If booking not found
   if (!booking) {
     return (
-      <View style={rescheduleBookingStyles.container}>
+      <View style={styles.container}>
         <Text variant="bodyLarge">Booking not found</Text>
-        <Button mode="contained" onPress={() => router.back()} style={rescheduleBookingStyles.button}>
+        <Button mode="contained" onPress={() => router.back()} style={styles.button}>
           Go Back
         </Button>
       </View>
@@ -226,13 +226,13 @@ export default function RescheduleAssistant() {
   }
 
   return (
-    <ScrollView style={rescheduleBookingStyles.container}>
-      <Text variant="headlineMedium" style={rescheduleBookingStyles.heading}>
+    <ScrollView style={styles.container}>
+      <Text variant="headlineMedium" style={styles.heading}>
         Intelligent Rescheduling
       </Text>
 
       {/* Voice Assistant Toggle */}
-      <View style={rescheduleBookingStyles.voiceAssistantContainer}>
+      <View style={styles.voiceAssistantContainer}>
         <Text variant="bodyMedium">Voice Assistant</Text>
         <Switch value={voiceEnabled} onValueChange={toggleVoiceAssistant} color="#6A1B9A" />
         {voiceEnabled && (
@@ -244,68 +244,68 @@ export default function RescheduleAssistant() {
                 `I'll help you reschedule your ${booking.serviceName} appointment. I've found ${alternatives.length} available times for you.`,
               )
             }
-            style={rescheduleBookingStyles.speakButton}
+            style={styles.speakButton}
           />
         )}
       </View>
 
-      <Card style={rescheduleBookingStyles.bookingCard}>
+      <Card style={styles.bookingCard}>
         <Card.Content>
           <Text variant="titleLarge">Current Appointment</Text>
-          <Divider style={rescheduleBookingStyles.divider} />
+          <Divider style={styles.divider} />
 
-          <View style={rescheduleBookingStyles.detailRow}>
+          <View style={styles.detailRow}>
             <Text variant="bodyMedium">Service:</Text>
-            <Text variant="bodyMedium" style={rescheduleBookingStyles.detailValue}>
+            <Text variant="bodyMedium" style={styles.detailValue}>
               {booking.serviceName}
             </Text>
           </View>
 
-          <View style={rescheduleBookingStyles.detailRow}>
+          <View style={styles.detailRow}>
             <Text variant="bodyMedium">Date:</Text>
-            <Text variant="bodyMedium" style={rescheduleBookingStyles.detailValue}>
+            <Text variant="bodyMedium" style={styles.detailValue}>
               {formatDate(booking.date)}
             </Text>
           </View>
 
-          <View style={rescheduleBookingStyles.detailRow}>
+          <View style={styles.detailRow}>
             <Text variant="bodyMedium">Time:</Text>
-            <Text variant="bodyMedium" style={rescheduleBookingStyles.detailValue}>
+            <Text variant="bodyMedium" style={styles.detailValue}>
               {booking.time}
             </Text>
           </View>
 
-          <View style={rescheduleBookingStyles.detailRow}>
+          <View style={styles.detailRow}>
             <Text variant="bodyMedium">Stylist:</Text>
-            <Text variant="bodyMedium" style={rescheduleBookingStyles.detailValue}>
+            <Text variant="bodyMedium" style={styles.detailValue}>
               {booking.stylistName}
             </Text>
           </View>
 
-          <View style={rescheduleBookingStyles.detailRow}>
+          <View style={styles.detailRow}>
             <Text variant="bodyMedium">Location:</Text>
-            <Text variant="bodyMedium" style={rescheduleBookingStyles.detailValue}>
+            <Text variant="bodyMedium" style={styles.detailValue}>
               {booking.branchName}
             </Text>
           </View>
         </Card.Content>
       </Card>
 
-      <Text variant="titleLarge" style={rescheduleBookingStyles.alternativesTitle}>
+      <Text variant="titleLarge" style={styles.alternativesTitle}>
         Recommended Alternatives
       </Text>
 
       {loading ? (
-        <View style={rescheduleBookingStyles.loadingContainer}>
+        <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#2196F3" />
-          <Text variant="bodyMedium" style={rescheduleBookingStyles.loadingText}>
+          <Text variant="bodyMedium" style={styles.loadingText}>
             Finding available slots...
           </Text>
         </View>
       ) : alternatives.length === 0 ? (
-        <Card style={rescheduleBookingStyles.noSlotsCard}>
+        <Card style={styles.noSlotsCard}>
           <Card.Content>
-            <Text variant="bodyMedium" style={rescheduleBookingStyles.noSlotsText}>
+            <Text variant="bodyMedium" style={styles.noSlotsText}>
               No alternative slots available. Please try again later.
             </Text>
           </Card.Content>
@@ -314,12 +314,12 @@ export default function RescheduleAssistant() {
         <View>
           {/* Group by date */}
           {Array.from(new Set(alternatives.map((slot) => slot.date))).map((dateString) => (
-            <View key={dateString} style={rescheduleBookingStyles.dateSection}>
-              <Text variant="titleMedium" style={rescheduleBookingStyles.dateTitle}>
+            <View key={dateString} style={styles.dateSection}>
+              <Text variant="titleMedium" style={styles.dateTitle}>
                 {formatDate(dateString)}
               </Text>
 
-              <View style={rescheduleBookingStyles.timeSlotContainer}>
+              <View style={styles.timeSlotContainer}>
                 {alternatives
                   .filter((slot) => slot.date === dateString)
                   .map((slot) => (
@@ -330,9 +330,9 @@ export default function RescheduleAssistant() {
                       }
                       onPress={() => handleSelectSlot(slot)}
                       style={[
-                        rescheduleBookingStyles.timeChip,
+                        styles.timeChip,
                         selectedSlot?.date === slot.date && selectedSlot?.time === slot.time
-                          ? rescheduleBookingStyles.selectedTimeChip
+                          ? styles.selectedTimeChip
                           : null,
                       ]}
                       selectedColor="#fff"
@@ -345,7 +345,7 @@ export default function RescheduleAssistant() {
             </View>
           ))}
 
-          <View style={rescheduleBookingStyles.legendContainer}>
+          <View style={styles.legendContainer}>
             <Text variant="bodySmall">★ Similar to your original time</Text>
           </View>
 
@@ -354,7 +354,7 @@ export default function RescheduleAssistant() {
             onPress={handleConfirm}
             disabled={!selectedSlot || processing}
             loading={processing}
-            style={rescheduleBookingStyles.confirmButton}
+            style={styles.confirmButton}
           >
             {processing ? 'Processing...' : 'Confirm New Time'}
           </Button>
@@ -363,7 +363,7 @@ export default function RescheduleAssistant() {
             mode="outlined"
             onPress={() => router.back()}
             disabled={processing}
-            style={rescheduleBookingStyles.cancelButton}
+            style={styles.cancelButton}
           >
             Cancel
           </Button>
