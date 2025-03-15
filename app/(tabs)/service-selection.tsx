@@ -1,59 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, FlatList } from 'react-native';
 import { Text, Card, Button, Title, Paragraph } from 'react-native-paper';
-import { CommandResult } from '../utils/voice-command-parser';
-import { router, useLocalSearchParams } from 'expo-router';
 import { serviceSelectionStyles as styles } from '../styles/stylistStyles';
-// Service type definition
-type Service = {
-  id: string;
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-};
-
-// Mock services data
-const services: Service[] = [
-  {
-    id: '1',
-    name: 'Haircut',
-    duration: 30,
-    price: 35,
-    description: 'Professional haircut tailored to your style preferences',
-  },
-  {
-    id: '2',
-    name: 'Coloring',
-    duration: 90,
-    price: 80,
-    description: 'Full color treatment including roots and styling',
-  },
-  {
-    id: '3',
-    name: 'Styling',
-    duration: 45,
-    price: 50,
-    description: 'Expert styling for special occasions or everyday looks',
-  },
-];
+import { Service } from '../types/serviceTypes';
+import { serviceMockData } from '../mock-data/servicesData';
+import useServices from '../hooks/useServices';
 
 export default function ServiceSelection() {
-  const params = useLocalSearchParams();
-  const command = params?.command ? (JSON.parse(params.command as string) as CommandResult) : null;
-  const [selectedService, setSelectedService] = useState<string | null>(command?.service || null);
-
-  const handleContinue = () => {
-    if (selectedService) {
-      router.push({
-        pathname: '/screens/branch-selection', // Changed from stylist-selection
-        params: {
-          serviceId: selectedService,
-          command: JSON.stringify(command),
-        },
-      });
-    }
-  };
+  const { selectedService, setSelectedService, command, handleContinue } = useServices();
 
   const renderServiceItem = ({ item }: { item: Service }) => (
     <Card
@@ -79,14 +33,15 @@ export default function ServiceSelection() {
 
       {command?.service && (
         <Text style={styles.voiceDetected}>
-          Voice command detected: {services.find((s) => s.id === command.service)?.name}
+          Voice command detected:{' '}
+          {serviceMockData.find((s) => s.id === parseInt(command.service || ''))?.name || ''}
         </Text>
       )}
 
       <FlatList
-        data={services}
+        data={serviceMockData}
         renderItem={renderServiceItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.servicesList}
       />
 
