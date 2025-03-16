@@ -1,8 +1,8 @@
 // Service type definition
 export interface Service {
-  id: number;
+  id: string;
   name: string;
-  duration: number;
+  duration?: number;
   price: number;
   description?: string;
 }
