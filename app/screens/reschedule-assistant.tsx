@@ -15,6 +15,9 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as Speech from 'expo-speech';
 import { rescheduleBookingStyles as styles } from '../styles/bookingStyles';
 
+// Add global setTimeout type
+declare const setTimeout: (callback: () => void, ms: number) => number;
+
 // Types
 type Booking = {
   id: string;
@@ -68,6 +71,8 @@ const mockBookings: Booking[] = [
     price: 80,
   },
 ];
+
+
 
 // Generate alternative slots intelligently
 const generateAlternatives = (booking: Booking): TimeSlot[] => {

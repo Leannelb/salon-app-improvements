@@ -4,7 +4,7 @@ export interface CustomButtonProps {
   buttonText: string;
   mode: 'text' | 'outlined' | 'contained' | 'elevated' | 'contained-tonal';
   onPress: () => void;
-  style?: React.CSSProperties;
+  style?: React.CSSProperties | undefined;
   labelStyle?: object;
   contentStyle?: object;
   link?: string;

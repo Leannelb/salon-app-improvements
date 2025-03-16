@@ -5,4 +5,4 @@ export interface Stylist {
   specialties?: string[];
   experience?: number;
   bio?: string;
-} 
+}

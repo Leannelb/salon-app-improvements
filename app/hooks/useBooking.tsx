@@ -8,6 +8,7 @@ import { Service } from '../types/serviceTypes';
 import { Stylist } from '../types/stylistTypes';
 import { mockBookings } from '../mock-data/bookingData';
 import { servicesBookingMockData, stylistsMockData } from '../mock-data/servicesData';
+import { mockBranches } from '../mock-data/branchData';
 
 // Add global setTimeout type
 declare const setTimeout: (callback: () => void, ms: number) => number;
@@ -448,5 +449,37 @@ export function useBookingScreen() {
     isFormValid,
     handleConfirm,
     processing,
+  };
+}
+
+export function useBranchSelection() {
+  const params = useLocalSearchParams();
+  const serviceId = params.serviceId as string;
+  const command = params.command ? (JSON.parse(params.command as string) as CommandResult) : null;
+
+  // Check if branch was detected in voice command
+  const detectedBranchId = command?.branch || null;
+  const [selectedBranch, setSelectedBranch] = useState<string | null>(detectedBranchId);
+
+  const handleContinue = () => {
+    if (selectedBranch) {
+      // Navigate to stylist selection with both service and branch
+      router.push({
+        pathname: '/screens/stylist-selection',
+        params: {
+          serviceId,
+          branchId: selectedBranch,
+          command: JSON.stringify(command),
+        },
+      });
+    }
+  };
+
+  return {
+    selectedBranch,
+    setSelectedBranch,
+    handleContinue,
+    command,
+    branches: mockBranches,
   };
 }

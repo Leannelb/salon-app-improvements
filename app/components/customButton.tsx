@@ -2,7 +2,15 @@ import { Link } from 'expo-router';
 import { Button } from 'react-native-paper';
 import { CustomButtonProps } from '../types/buttonType';
 
-function CustomButton({ mode, style, onPress, buttonText, link, icon, disabled }: CustomButtonProps) {
+function CustomButton({
+  mode,
+  style,
+  onPress,
+  buttonText,
+  link,
+  icon,
+  disabled,
+}: CustomButtonProps) {
   return (
     <Button mode={mode} onPress={onPress} style={style} icon={icon} disabled={disabled}>
       {link && <Link href={link}>{buttonText}</Link>}
