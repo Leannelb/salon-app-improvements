@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, Button, Card, Avatar } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { bookingCompleteStyles as styles } from '../styles/bookingStyles';
+import { bookingCompleteStyles as styles } from '../../styles/bookingStyles';
 
 export default function BookingComplete() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function BookingComplete() {
         mode="outlined"
         onPress={() => {
           // In a real app, this would navigate to a bookings management screen
-          router.push('/screens/booking-management');
+          router.push('../screens/booking-management');
         }}
         style={styles.button}
       >
