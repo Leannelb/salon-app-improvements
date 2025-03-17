@@ -142,7 +142,7 @@ function extractDate(text: string): Date | undefined {
   }
 
   // Check for specific date pattern (MM/DD, MM-DD, etc.)
-  const dateRegex = /(\d{1,2})[./\-](\d{1,2})(?:[./\-](\d{2,4}))?/;
+  const dateRegex = /(\d{1,2})[./-](\d{1,2})(?:[./-](\d{2,4}))?/;
   const dateMatch = text.match(dateRegex);
   if (dateMatch) {
     const month = parseInt(dateMatch[1]) - 1; // JS months are 0-indexed
@@ -240,12 +240,12 @@ function extractTime(text: string): string | undefined {
   if (match1) {
     let hour = parseInt(match1[1]);
     const minute = match1[2];
-    const ampm = match1[3]?.toLowerCase();
+    const period = match1[3]?.toLowerCase();
 
     // Convert to 24-hour format if necessary
-    if (ampm === 'pm' && hour < 12) {
+    if (period === 'pm' && hour < 12) {
       hour += 12;
-    } else if (ampm === 'am' && hour === 12) {
+    } else if (period === 'am' && hour === 12) {
       hour = 0;
     }
 
