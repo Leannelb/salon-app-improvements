@@ -7,7 +7,8 @@ import { Branch } from '../types/branchTypes';
 import { useBranchSelection } from '../hooks/useBooking';
 
 export default function BranchSelection() {
-  const { selectedBranch, setSelectedBranch, handleContinue, branches, command } = useBranchSelection();
+  const { selectedBranch, setSelectedBranch, handleContinue, branches, command } =
+    useBranchSelection();
 
   const renderBranchItem = ({ item }: { item: Branch }) => (
     <Card

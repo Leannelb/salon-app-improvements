@@ -40,7 +40,7 @@ export default function Index() {
             mode="contained"
             icon="microphone"
             onPress={() => setVoiceModalVisible(true)}
-            buttonText={isSmallScreen ? 'Voice' : 'Book with Voice'}
+            buttonText={isSmallScreen ? 'Voice Booking' : 'Book with Voice'}
             style={buttonStyles.voiceButton}
           />
 
@@ -78,7 +78,7 @@ export default function Index() {
             style={homepageStyles.closeButton}
           />
 
-          <Text style={homepageStyles.modalTitle}>Voice Booking</Text>
+          <Text style={homepageStyles.modalTitle}>!!! Voice Booking</Text>
           <Text style={homepageStyles.modalSubtitle}>
             Say a command like &quot;Book a haircut with Sarah tomorrow at 2pm&quot;
           </Text>
