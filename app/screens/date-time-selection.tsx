@@ -6,6 +6,10 @@ import { Calendar } from 'react-native-calendars';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { CommandResult } from '../utils/voice-command-parser';
 import { dateTimeSelectionStyles as styles } from '../styles/dateTimeSelectionStyles';
+
+// Add global setTimeout type
+declare const setTimeout: (callback: () => void, ms: number) => number;
+
 // Types
 type TimeSlot = {
   id: string;

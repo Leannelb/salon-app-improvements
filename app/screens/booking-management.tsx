@@ -1,153 +1,29 @@
 // screens/booking-management.tsx
-import React, { useState } from 'react';
-import { View, FlatList, Alert, ScrollView } from 'react-native';
+import React from 'react';
+import { View, ScrollView, FlatList } from 'react-native';
 import { Text, Card, Button, Divider, Dialog, Portal } from 'react-native-paper';
-import { useRouter } from 'expo-router';
-import * as Speech from 'expo-speech';
 import { bookingManagementStyles as styles } from '../styles/bookingStyles';
+import { Booking } from '../types/bookingTypes';
+import { useBookingManagement } from '../hooks/useBooking';
+import CustomButton from '../components/customButton';
+import { useRouter } from 'expo-router';
 
-// Types for bookings
-type BookingStatus = 'confirmed' | 'completed' | 'cancelled';
-
-type Booking = {
-  id: string;
-  serviceId: string;
-  serviceName: string;
-  stylistId: string;
-  stylistName: string;
-  branchId: string;
-  branchName: string;
-  date: string;
-  time: string;
-  status: BookingStatus;
-  price: number;
-};
-
-// Mock bookings data
-const mockBookings: Booking[] = [
-  {
-    id: 'booking-1',
-    serviceId: '1',
-    serviceName: 'Haircut',
-    stylistId: '1',
-    stylistName: 'John',
-    branchId: 'southside',
-    branchName: 'Southside Salon',
-    date: '2025-03-15',
-    time: '10:00',
-    status: 'confirmed',
-    price: 35,
-  },
-  {
-    id: 'booking-2',
-    serviceId: '2',
-    serviceName: 'Coloring',
-    stylistId: '2',
-    stylistName: 'Sarah',
-    branchId: 'northside',
-    branchName: 'Northside Studio',
-    date: '2025-03-20',
-    time: '14:30',
-    status: 'confirmed',
-    price: 80,
-  },
-];
+const router = useRouter();
 
 export default function BookingManagement() {
-  const router = useRouter();
-  const [bookings, setBookings] = useState<Booking[]>(mockBookings);
-  const [cancelDialogVisible, setCancelDialogVisible] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
-  const [activeFilter, setActiveFilter] = useState<BookingStatus | 'all'>('all');
-
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
-  // Handle voice commands for bookings
-  const handleVoiceCommand = () => {
-    Speech.speak('Please say cancel or reschedule followed by your appointment date.', {
-      onDone: () => {
-        // In a real app, we would listen for the command here
-        // For demo purposes, we'll just use a timeout to simulate voice recognition
-        setTimeout(() => {
-          Alert.alert('Voice Command Recognized', 'Reschedule my appointment on March 15th', [
-            {
-              text: 'Process Command',
-              onPress: () => {
-                const booking = bookings.find((b) => b.date === '2025-03-15');
-                if (booking) {
-                  handleReschedule(booking);
-                }
-              },
-            },
-            { text: 'Cancel', style: 'cancel' },
-          ]);
-        }, 2000);
-      },
-    });
-  };
-
-  // Handle rescheduling
-  const handleReschedule = (booking: Booking) => {
-    // Navigate to reschedule assistant with booking data
-    router.push({
-      pathname: '/screens/reschedule-assistant',
-      params: { bookingId: booking.id },
-    });
-  };
-
-  // Handle cancellation request
-  const handleCancelRequest = (booking: Booking) => {
-    setSelectedBooking(booking);
-    setCancelDialogVisible(true);
-  };
-
-  // Confirm cancellation
-  const confirmCancel = () => {
-    if (selectedBooking) {
-      // Provide feedback with voice
-      Speech.speak(
-        `Your ${selectedBooking.serviceName} appointment on ${formatDate(selectedBooking.date)} has been cancelled.`,
-      );
-
-      // Update booking status to cancelled
-      setBookings((prev) =>
-        prev.map((booking) =>
-          booking.id === selectedBooking.id
-            ? { ...booking, status: 'cancelled' as BookingStatus }
-            : booking,
-        ),
-      );
-
-      // Close dialog
-      setCancelDialogVisible(false);
-      setSelectedBooking(null);
-
-      // Show success message
-      Alert.alert('Cancelled', 'Your appointment has been cancelled.');
-    }
-  };
-
-  // Get appropriate color for status
-  const getStatusColor = (status: BookingStatus) => {
-    switch (status) {
-      case 'confirmed':
-        return '#4CAF50';
-      case 'completed':
-        return '#2196F3';
-      case 'cancelled':
-        return '#F44336';
-      default:
-        return '#757575';
-    }
-  };
+  const {
+    bookings,
+    selectedBooking,
+    cancelDialogVisible,
+    activeFilter,
+    getStatusColor,
+    formatDate,
+    handleReschedule,
+    handleCancelRequest,
+    confirmCancel,
+    setCancelDialogVisible,
+    setActiveFilter,
+  } = useBookingManagement();
 
   // Render a booking card
   const renderBookingItem = ({ item }: { item: Booking }) => {
@@ -210,83 +86,35 @@ export default function BookingManagement() {
     );
   };
 
-  // Filter button component
-  const FilterButton = ({
-    label,
-    isActive,
-    onPress,
-  }: {
-    label: string;
-    isActive: boolean;
-    onPress: () => void;
-  }) => (
-    <Button
-      mode={isActive ? 'contained' : 'outlined'}
-      onPress={onPress}
-      style={styles.filterButton}
-    >
-      {label}
-    </Button>
-  );
-
-  // Filter bookings based on active filter
-  const filteredBookings =
-    activeFilter === 'all'
-      ? bookings
-      : bookings.filter((booking) => booking.status === activeFilter);
-
   return (
     <ScrollView style={styles.container}>
       <Text variant="headlineMedium" style={styles.heading}>
         My Appointments
       </Text>
 
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text variant="titleMedium">No appointments scheduled</Text>
-          <Text variant="bodyMedium">Book your first appointment today!</Text>
-        </Card.Content>
-      </Card>
-
       <View style={styles.filtersContainer}>
-        <FilterButton
-          label="Confirmed"
-          isActive={activeFilter === 'confirmed'}
-          onPress={() => setActiveFilter('confirmed')}
-        />
-        {/* <FilterButton
-          label="Completed"
-          isActive={activeFilter === 'completed'}
-          onPress={() => setActiveFilter('completed')}
-        />
-        <FilterButton
-          label="Cancelled"
-          isActive={activeFilter === 'cancelled'}
-          onPress={() => setActiveFilter('cancelled')}
-        /> */}
-        <FilterButton
+        <Button mode="text" onPress={() => setActiveFilter('confirmed')}>
+          Confirmed
+        </Button>
+        <Button
           label="All"
           isActive={activeFilter === 'all'}
           onPress={() => setActiveFilter('all')}
         />
       </View>
 
-      {filteredBookings.length === 0 ? (
+      {bookings.length === 0 ? (
         <Card style={styles.emptyCard}>
           <Card.Content>
             <Text style={styles.emptyText}>No appointments found</Text>
-            <Button
-              mode="contained"
-              onPress={() => router.push('/booking')}
-              style={styles.newBookingButton}
-            >
+            <Button mode="contained" style={styles.newBookingButton}>
               Book New Appointment
             </Button>
           </Card.Content>
         </Card>
       ) : (
         <FlatList
-          data={filteredBookings}
+          data={bookings}
           renderItem={renderBookingItem}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.bookingsList}
@@ -310,16 +138,13 @@ export default function BookingManagement() {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-
-      <Button
+      <CustomButton
         mode="contained"
         icon="plus"
-        onPress={() => router.push('/booking')}
         style={styles.floatingButton}
-      >
-        Book New Appointment
-      </Button>
+        onPress={() => router.push('/screens/booking-assistant')}
+        buttonText="Book New Appointment"
+      />
     </ScrollView>
   );
 }
-
